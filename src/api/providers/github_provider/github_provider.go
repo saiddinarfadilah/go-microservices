@@ -24,8 +24,10 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 	headers := http.Header{}
 	headers.Set(headerAuthorization, getAuthorizationHeader(accessToken))
 	response, err := restclient.Post(urlCreateRepo, request, headers)
+	fmt.Println(response)
+	fmt.Println(err)
 	if err != nil {
-		log.Println("error when trying to create new repo in github: %s", err.Error())
+		log.Printf("error when trying to create new repo in github: %s\n", err.Error())
 		return nil, &github.GithubErrorResponse{
 			StatusCode: http.StatusInternalServerError,
 			Message:    err.Error(),
@@ -56,7 +58,7 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 
 	var result github.CreateRepoResponse
 	if err := json.Unmarshal(bytes, &result); err != nil {
-		log.Println("error when trying to unmarshal create repo successful response: %s", err.Error())
+		log.Printf("error when trying to unmarshal create repo successful response: %s\n", err.Error())
 		return nil, &github.GithubErrorResponse{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "error when trying to unmarshal github create repo response",
